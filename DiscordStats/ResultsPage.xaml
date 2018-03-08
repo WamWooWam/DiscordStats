@@ -1,0 +1,109 @@
+﻿<Page x:Class="DiscordStats.ResultsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:DiscordStats"
+      xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit"
+      mc:Ignorable="d" 
+      d:DesignHeight="480" d:DesignWidth="640"
+      Title="ResultsPage">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Margin="0,0,0,10" FontSize="24" Text="Results"/>
+        <TabControl Grid.Row="1">
+            <TabItem Header="Guild">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="168"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Image ClipToBounds="True" Source="{Binding Guild.SplashUrl, Converter={StaticResource splash}}" Stretch="UniformToFill" VerticalAlignment="Center">
+                            <Image.Effect>
+                                <BlurEffect Radius="40"/>
+                            </Image.Effect>
+                        </Image>
+                        <Grid Background="#80FFFFFF"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Width="128" Height="128" Margin="20">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{Binding Guild.IconUrl}"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Guild.Name}" FontSize="36"/>
+                                <TextBlock>Created: <Run Text="{Binding Guild.CreationTimestamp, Mode=OneWay}"/></TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                    <TabControl Grid.Row="1" TabStripPlacement="Bottom">
+                        <TabItem Header="Message Leaderboards">
+                            <toolkit:Chart x:Name="leaderboardsChart" Title="Message Leaderboards">
+                                <toolkit:Chart.Series>
+                                    <toolkit:ColumnSeries Title="User Message Counts" IndependentValueBinding="{Binding Key}" DependentValueBinding="{Binding Value}" >
+                                        <toolkit:ColumnSeries.DataPointStyle>
+                                            <Style TargetType="{x:Type toolkit:ColumnDataPoint}">
+                                                <Setter Property="BorderThickness" Value="1024"/>
+                                                <Setter Property="BorderBrush" Value="{x:Static SystemParameters.WindowGlassBrush}"/>
+                                                <Setter Property="Background" Value="{x:Static SystemParameters.WindowGlassBrush}"/>
+                                            </Style>
+                                        </toolkit:ColumnSeries.DataPointStyle>
+                                    </toolkit:ColumnSeries>
+                                </toolkit:Chart.Series>
+                            </toolkit:Chart>
+                        </TabItem>
+                        <TabItem Header="Message Percentages">
+                            <toolkit:Chart x:Name="leaderboardsPie" Title="Message Leaderboards" >
+                                <toolkit:Chart.Series>
+                                    <toolkit:PieSeries Title="User Message Percentages" IndependentValueBinding="{Binding Key}" DependentValueBinding="{Binding Value}" Margin="10,9,10,11" />
+                                </toolkit:Chart.Series>
+                            </toolkit:Chart>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Members">
+                <DataGrid 
+                        x:Name="memberDataGrid"
+                        ItemsSource="{Binding MemberStats}"
+                        HeadersVisibility="Column"
+                        HorizontalGridLinesBrush="LightGray" 
+                        VerticalGridLinesBrush="LightGray"
+                        BeginningEdit="grid_BeginningEdit"
+                        VerticalScrollBarVisibility="Auto"
+                        RowHeight="20"
+                        AutoGenerateColumns="True"/>
+            </TabItem>
+            <TabItem Header="Channels">
+                <DataGrid 
+                        x:Name="channelsDataGrid"
+                        ItemsSource="{Binding ChannelStats}"
+                        HeadersVisibility="Column"
+                        HorizontalGridLinesBrush="LightGray" 
+                        VerticalGridLinesBrush="LightGray"
+                        BeginningEdit="grid_BeginningEdit"
+                        VerticalScrollBarVisibility="Auto"
+                        RowHeight="20"
+                        AutoGenerateColumns="True"/>
+            </TabItem>
+        </TabControl>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="2" Margin="0,10,0,0">
+            <ComboBox Width="150" x:Name="formatComboBox" SelectedIndex="0">
+                <ComboBox.Items>
+                    <ComboBoxItem>Excel (*.xlsx)</ComboBoxItem>
+                    <ComboBoxItem>Access (*.accdb)</ComboBoxItem>
+                    <ComboBoxItem>XML (*.xml)</ComboBoxItem>
+                    <ComboBoxItem>JSON (*.json)</ComboBoxItem>
+                    <ComboBoxItem>CSV (*.csv)</ComboBoxItem>
+                </ComboBox.Items>
+            </ComboBox>
+            <Button Content="Export" Name="export" Click="export_Click" Padding="15, 1.5" Margin="5,0,0,0"/>
+        </StackPanel>
+    </Grid>
+</Page>

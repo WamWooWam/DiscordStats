@@ -1,0 +1,10 @@
+﻿<Application x:Class="DiscordStats.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:DiscordStats"
+             xmlns:converters="clr-namespace:DiscordStats.Converters"
+             StartupUri="MainWindow.xaml" Startup="Application_Startup">
+    <Application.Resources>
+        <converters:SplashUrlConverter x:Key="splash"/>
+    </Application.Resources>
+</Application>
