@@ -63,14 +63,15 @@
                     <StackPanel Margin="0,0,2.5,0">
                         <TextBlock Margin="0,5" Text="Before"/>
                         <DatePicker SelectedDate="{Binding BeforeDate}" />
-                        <TextBlock Margin="0,5" Text="In Channel"/>
-                        <ComboBox x:Name="channelsBox" IsEditable="True" SelectedItem="{Binding InChannel}">
-                            <ComboBox.ItemTemplate>
+                        <TextBlock Margin="0,5" Text="Selected Channels"/>
+                        <ListView x:Name="selectedChannels" SelectionChanged="selectedChannels_SelectionChanged" SelectionMode="Multiple" MaxHeight="125">
+                            <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Name}"/>
+                                    <TextBlock>#<Run Text="{Binding Name, Mode=OneWay}"/></TextBlock>
                                 </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <CheckBox Margin="0,5" x:Name="selectAllChannels" Checked="selectAllChannels_Checked" Unchecked="selectAllChannels_Unchecked" Content="Select All"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="2.5,0,0,0">
                         <TextBlock Margin="0,5" Text="After"/>

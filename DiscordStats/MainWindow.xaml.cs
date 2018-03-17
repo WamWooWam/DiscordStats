@@ -132,13 +132,14 @@ namespace DiscordStats
                 DiscordGuild guild = (guildsComboBox.SelectedItem as DiscordGuild);
                 DiscordMember currentMember = guild.CurrentMember;
                 configureGrid.Visibility = Visibility.Visible;
-                channelsBox.ItemsSource = guild.Channels
+                selectedChannels.ItemsSource = guild.Channels
                     .Where(c => c.PermissionsFor(currentMember).HasFlag(Permissions.AccessChannels))
                     .Where(c => c.Type == ChannelType.Text)
                     .OrderBy(c => c.Position);
+                selectedChannels.SelectAll();
+
                 selectedRoles.ItemsSource = guild.Roles.OrderByDescending(r => r.Position);
-                foreach (var role in guild.Roles)
-                    selectedRoles.SelectedItems.Add(role);
+                selectedRoles.SelectAll();
             }
             else
             {
@@ -154,7 +155,19 @@ namespace DiscordStats
             runContent.Visibility = Visibility.Visible;
             GuildStats stats = new GuildStats(conf.Guild);
 
-            string initialResult = await _httpClient.GetStringAsync($"https://discordapp.com/api/v7/guilds/{conf.Guild.Id}/messages/search?include_nsfw=true");
+            StringBuilder strBuilder = new StringBuilder();
+
+            if (selectAllChannels.IsChecked != false)
+            {
+                foreach (var channel in selectedChannels.SelectedItems.Cast<DiscordChannel>())
+                {
+                    strBuilder.Append($"&channel_id={channel.Id}");
+                }
+            }
+
+            string append = strBuilder.ToString();
+
+            string initialResult = await _httpClient.GetStringAsync($"https://discordapp.com/api/v7/guilds/{conf.Guild.Id}/messages/search?include_nsfw=true" + append);
             stats.TotalMessages = GetCount(initialResult);
 
             if (conf.UserMentionCounts == true || conf.UserMessageCounts == true)
@@ -162,17 +175,7 @@ namespace DiscordStats
                 await SetStatus("Retrieving members... (This may take a while)");
                 var members = (await conf.Guild.GetAllMembersAsync()).OrderBy(m => m.Username).ToList();
 
-                bool all = true;
-                foreach (var role in selectedRoles.Items.Cast<DiscordRole>())
-                {
-                    if (!selectedRoles.SelectedItems.Cast<DiscordRole>().Select(r => r.Id).Contains(role.Id))
-                    {
-                        all = false;
-                        break;
-                    }
-                }
-
-                if (!all)
+                if (selectAllRoles.IsChecked != false)
                 {
                     members.RemoveAll(m => !m.Roles.Any(r => selectedRoles.SelectedItems.Contains(r)));
                 }
@@ -192,7 +195,7 @@ namespace DiscordStats
                     {
                         try
                         {
-                            string sentResult = await _httpClient.GetStringAsync($"https://discordapp.com/api/v7/guilds/{conf.Guild.Id}/messages/search?author_id={m.Id}&include_nsfw=true");
+                            string sentResult = await _httpClient.GetStringAsync($"https://discordapp.com/api/v7/guilds/{conf.Guild.Id}/messages/search?author_id={m.Id}&include_nsfw=true" + append);
                             mstats.SentMessages = GetCount(sentResult);
                             var array = JObject.Parse(sentResult)["messages"].FirstOrDefault();
 
@@ -221,7 +224,7 @@ namespace DiscordStats
                     {
                         try
                         {
-                            string sentResult = await _httpClient.GetStringAsync($"https://discordapp.com/api/v7/guilds/{conf.Guild.Id}/messages/search?mentions={m.Id}&include_nsfw=true");
+                            string sentResult = await _httpClient.GetStringAsync($"https://discordapp.com/api/v7/guilds/{conf.Guild.Id}/messages/search?mentions={m.Id}&include_nsfw=true" + append);
                             mstats.Mentions = GetCount(sentResult);
 
                             if (conf.BanMeDaddy != false)
@@ -323,34 +326,34 @@ namespace DiscordStats
             dialog.ShowDialog();
         }
 
-        private void selectAllRoles_Checked(object sender, RoutedEventArgs e)
+        private void SelectionChanged(ListView view, CheckBox checkBox)
         {
-            selectedRoles.SelectAll();
-        }
-
-        private void selectAllRoles_Unchecked(object sender, RoutedEventArgs e)
-        {
-            selectedRoles.SelectedItems.Clear();
-        }
-
-        private void selectedRoles_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var items = selectedRoles.Items.Cast<DiscordRole>().ToList();
-            items.RemoveAll(r => selectedRoles.SelectedItems.Contains(r));
-            if(items.Count == selectedRoles.Items.Count)
+            var items = view.Items.Cast<object>().ToList();
+            items.RemoveAll(r => view.SelectedItems.Contains(r));
+            if (items.Count == view.Items.Count)
             {
-                selectAllRoles.IsChecked = false;
+                checkBox.IsChecked = false;
             }
             else if (items.Any())
             {
-                selectAllRoles.IsChecked = null;
+                checkBox.IsChecked = null;
             }
             else
             {
-                selectAllRoles.IsChecked = true;
+                checkBox.IsChecked = true;
             }
-            
         }
-    }
 
+        private void selectAllRoles_Checked(object sender, RoutedEventArgs e) => selectedRoles.SelectAll();
+
+        private void selectAllRoles_Unchecked(object sender, RoutedEventArgs e) => selectedRoles.SelectedItems.Clear();
+
+        private void selectedRoles_SelectionChanged(object sender, SelectionChangedEventArgs e) => SelectionChanged(selectedRoles, selectAllRoles);
+
+        private void selectAllChannels_Checked(object sender, RoutedEventArgs e) => selectedChannels.SelectAll();
+
+        private void selectAllChannels_Unchecked(object sender, RoutedEventArgs e) => selectedChannels.SelectedItems.Clear();
+
+        private void selectedChannels_SelectionChanged(object sender, SelectionChangedEventArgs e) => SelectionChanged(selectedChannels, selectAllChannels);
+    }
 }
