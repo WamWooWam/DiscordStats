@@ -39,8 +39,7 @@ namespace DiscordStats
                 {
                     dictionary.Add(item.Username, item.SentMessages);
                 }
-
-                ((ColumnSeries)leaderboardsChart.Series[0]).ItemsSource = dictionary.OrderBy(t => t.Value);
+                
                 ((PieSeries)leaderboardsPie.Series[0]).ItemsSource = dictionary.OrderByDescending(t => t.Value);
             }
         }

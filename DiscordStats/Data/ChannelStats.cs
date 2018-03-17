@@ -23,6 +23,7 @@ namespace DiscordStats.Data
         public ulong Id { get; set; }
         public string Name { get; set; }
         public int Messages { get; set; }
+
         private int DaysSinceCreate => (int)Math.Ceiling((DateTime.Now - _channel.CreationTimestamp.DateTime).TotalDays);
         public int AvgMessagesPerDay => Messages != 0 ? (int)(Messages / DaysSinceCreate) : 0;
 

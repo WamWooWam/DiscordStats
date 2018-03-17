@@ -12,7 +12,8 @@
                 Collecting statistics for <Run x:Name="guildName"/>
             </TextBlock>
             <ProgressBar x:Name="progressBar" IsIndeterminate="True" Margin="0, 7.5"/>
-            <TextBlock x:Name="statusText" HorizontalAlignment="Center" Text="Getting ready..."/>
+            <TextBlock x:Name="statusText1" HorizontalAlignment="Center" Text="Getting ready..."/>
+            <TextBlock x:Name="statusText2" HorizontalAlignment="Center" Text=""/>
         </StackPanel>
         <Frame x:Name="resultsContent" Visibility="Collapsed"/>
         <StackPanel x:Name="preRunContent" Visibility="Visible">
@@ -74,6 +75,15 @@
                     <StackPanel Grid.Column="1" Margin="2.5,0,0,0">
                         <TextBlock Margin="0,5" Text="After"/>
                         <DatePicker x:Name="afterDate" SelectedDate="{Binding AfterDate}" />
+                        <TextBlock Margin="0,5" Text="Selected Roles"/>
+                        <ListView x:Name="selectedRoles" SelectionChanged="selectedRoles_SelectionChanged" SelectionMode="Multiple" MaxHeight="125">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}"/>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <CheckBox Margin="0,5" x:Name="selectAllRoles" Checked="selectAllRoles_Checked" Unchecked="selectAllRoles_Unchecked" Content="Select All"/>
                     </StackPanel>
                 </Grid>
                 <Button Click="run_Click" Name="run" Content="Run" Margin="0,10" Padding="17.5, 1.5"/>

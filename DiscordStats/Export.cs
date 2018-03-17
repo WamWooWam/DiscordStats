@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Office.Interop;
 using Microsoft.Office.Interop.Excel;
+using Microsoft.Office.Interop.Access;
 using DiscordStats.Data;
 using System.IO;
 using System.Threading;
@@ -36,8 +38,8 @@ namespace DiscordStats
                     {
                         try
                         {
-                            Application app = new Application();
-                            var workbook = app.Workbooks.Add();
+                            Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
+                            Workbook workbook = app.Workbooks.Add();
                             Worksheet memberSheet = workbook.Sheets.Add();
 
                             try
@@ -56,7 +58,7 @@ namespace DiscordStats
                                 for (int i = 0; i < stats.MemberStats.Count(); i++)
                                 {
                                     MemberStats stat = stats.MemberStats.ElementAt(i);
-                                    memberSheet.Cells[i + 2, 1] = stat.Id;
+                                    memberSheet.Cells[i + 2, 1] = stat.Id.ToString();
                                     memberSheet.Cells[i + 2, 2] = stat.Username.Trim('=');
 
                                     memberSheet.Cells[i + 2, 3] = stat.SentMessages;
@@ -65,11 +67,13 @@ namespace DiscordStats
                                     memberSheet.Cells[i + 2, 6] = stat.LastMessage.ToString();
 
                                     if ((i % 3) == 0)
-                                        App.Current.Dispatcher.Invoke(() => progressDialog.ProgressBarValue += 3);
+                                        App.Current.Dispatcher.Invoke(() => { try { progressDialog.ProgressBarValue = (progressDialog.ProgressBarValue +3); } catch { } });
                                 }
 
                                 Worksheet channelsSheet = workbook.Sheets.Add();
                                 channelsSheet.Name = "Channels";
+
+
 
                                 channelsSheet.Cells[1, 1] = "Id";
                                 channelsSheet.Cells[1, 2] = "Name";
@@ -79,19 +83,18 @@ namespace DiscordStats
                                 for (int i = 0; i < stats.ChannelStats.Count(); i++)
                                 {
                                     ChannelStats stat = stats.ChannelStats.ElementAt(i);
-                                    channelsSheet.Cells[i + 2, 1] = stat.Id;
+                                    channelsSheet.Cells[i + 2, 1] = stat.Id.ToString();
                                     channelsSheet.Cells[i + 2, 2] = stat.Name.Trim('=');
 
                                     channelsSheet.Cells[i + 2, 3] = stat.Messages;
                                     channelsSheet.Cells[i + 2, 4] = stat.AvgMessagesPerDay;
 
-                                    App.Current.Dispatcher.Invoke(() => progressDialog.ProgressBarValue += 1);
+                                    App.Current.Dispatcher.Invoke(() => { try { progressDialog.ProgressBarValue = (progressDialog.ProgressBarValue + 1); } catch { } });
                                 }
-
-                                workbook.SaveAs(dialog.FileName);
                             }
                             finally
                             {
+                                workbook.SaveAs(dialog.FileName);
                                 workbook.Close();
                                 app.Quit();
 

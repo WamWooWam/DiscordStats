@@ -117,6 +117,9 @@ namespace DiscordStats
                     .Where(c => c.PermissionsFor(currentMember).HasFlag(Permissions.AccessChannels))
                     .Where(c => c.Type == ChannelType.Text)
                     .OrderBy(c => c.Position);
+                selectedRoles.ItemsSource = guild.Roles.OrderByDescending(r => r.Position);
+                foreach (var role in guild.Roles)
+                    selectedRoles.SelectedItems.Add(role);
             }
             else
             {
@@ -132,17 +135,39 @@ namespace DiscordStats
             runContent.Visibility = Visibility.Visible;
             GuildStats stats = new GuildStats(conf.Guild);
 
+            string initialResult = await _httpClient.GetStringAsync($"https://discordapp.com/api/v7/guilds/{conf.Guild.Id}/messages/search?include_nsfw=true");
+            stats.TotalMessages = GetCount(initialResult);
+
             if (conf.UserMentionCounts == true || conf.UserMessageCounts == true)
             {
                 await SetStatus("Retrieving members... (This may take a while)");
                 var members = (await conf.Guild.GetAllMembersAsync()).OrderBy(m => m.Username).ToList();
 
+                bool all = true;
+                foreach (var role in selectedRoles.Items.Cast<DiscordRole>())
+                {
+                    if (!selectedRoles.SelectedItems.Cast<DiscordRole>().Select(r => r.Id).Contains(role.Id))
+                    {
+                        all = false;
+                        break;
+                    }
+                }
+
+                if (!all)
+                {
+                    members.RemoveAll(m => !m.Roles.Any(r => selectedRoles.SelectedItems.Contains(r)));
+                }
+
+                Stopwatch watch = new Stopwatch();
+                TimeSpan timeSpan = default(TimeSpan);
+
+                watch.Start();
                 for (int i = 0; i < members.Count; i++)
                 {
                     var m = members.ElementAt(i);
-                    await SetStatus($"Searching for @{m.Username}#{m.Discriminator} ({i + 1}/{members.Count})", i, members.Count);
+                    await SetStatus($"Searching for @{m.Username}#{m.Discriminator}", $"{i + 1}/{members.Count} - {timeSpan:mm\\:ss} remaining", i, members.Count);
 
-                    var mstats = new MemberStats(m);
+                    var mstats = new MemberStats(m, stats.TotalMessages);
 
                     if (conf.UserMessageCounts == true)
                     {
@@ -192,6 +217,7 @@ namespace DiscordStats
                         }
                     }
 
+                    timeSpan = TimeSpan.FromTicks((watch.Elapsed.Ticks / (i + 1)) * (members.Count - i));
                     stats.MemberStats.Add(mstats);
                 }
             }
@@ -208,7 +234,7 @@ namespace DiscordStats
                 for (int i = 0; i < channels.Count; i++)
                 {
                     DiscordChannel c = channels.ElementAt(i);
-                    await SetStatus($"Getting message count for #{c.Name} ({i + 1}/{channels.Count})", i, channels.Count);
+                    await SetStatus($"Getting message count for #{c.Name}", $"{i + 1}/{channels.Count}", i, channels.Count);
 
                     ChannelStats channelStat = new ChannelStats(c);
 
@@ -242,11 +268,12 @@ namespace DiscordStats
             return tempObject["total_results"].ToObject<int>();
         }
 
-        private async Task SetStatus(string text, int? value = null, int? max = null)
+        private async Task SetStatus(string text, string line2 = "", int? value = null, int? max = null)
         {
             await Dispatcher.InvokeAsync(() =>
             {
-                statusText.Text = text;
+                statusText1.Text = text;
+                statusText2.Text = line2;
                 progressBar.Maximum = max ?? progressBar.Maximum;
                 if (value == null)
                 {
@@ -275,6 +302,35 @@ namespace DiscordStats
             };
             dialog.Buttons.Add(new TaskDialogButton(ButtonType.Ok));
             dialog.ShowDialog();
+        }
+
+        private void selectAllRoles_Checked(object sender, RoutedEventArgs e)
+        {
+            selectedRoles.SelectAll();
+        }
+
+        private void selectAllRoles_Unchecked(object sender, RoutedEventArgs e)
+        {
+            selectedRoles.SelectedItems.Clear();
+        }
+
+        private void selectedRoles_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var items = selectedRoles.Items.Cast<DiscordRole>().ToList();
+            items.RemoveAll(r => selectedRoles.SelectedItems.Contains(r));
+            if(items.Count == selectedRoles.Items.Count)
+            {
+                selectAllRoles.IsChecked = false;
+            }
+            else if (items.Any())
+            {
+                selectAllRoles.IsChecked = null;
+            }
+            else
+            {
+                selectAllRoles.IsChecked = true;
+            }
+            
         }
     }
 

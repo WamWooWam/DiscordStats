@@ -43,25 +43,10 @@
                         </StackPanel>
                     </Grid>
                     <TabControl Grid.Row="1" TabStripPlacement="Bottom">
-                        <TabItem Header="Message Leaderboards">
-                            <toolkit:Chart x:Name="leaderboardsChart" Title="Message Leaderboards">
-                                <toolkit:Chart.Series>
-                                    <toolkit:ColumnSeries Title="User Message Counts" IndependentValueBinding="{Binding Key}" DependentValueBinding="{Binding Value}" >
-                                        <toolkit:ColumnSeries.DataPointStyle>
-                                            <Style TargetType="{x:Type toolkit:ColumnDataPoint}">
-                                                <Setter Property="BorderThickness" Value="1024"/>
-                                                <Setter Property="BorderBrush" Value="{x:Static SystemParameters.WindowGlassBrush}"/>
-                                                <Setter Property="Background" Value="{x:Static SystemParameters.WindowGlassBrush}"/>
-                                            </Style>
-                                        </toolkit:ColumnSeries.DataPointStyle>
-                                    </toolkit:ColumnSeries>
-                                </toolkit:Chart.Series>
-                            </toolkit:Chart>
-                        </TabItem>
                         <TabItem Header="Message Percentages">
-                            <toolkit:Chart x:Name="leaderboardsPie" Title="Message Leaderboards" >
+                            <toolkit:Chart x:Name="leaderboardsPie" Title="Message Leaderboards">
                                 <toolkit:Chart.Series>
-                                    <toolkit:PieSeries Title="User Message Percentages" IndependentValueBinding="{Binding Key}" DependentValueBinding="{Binding Value}" Margin="10,9,10,11" />
+                                    <toolkit:PieSeries Title="User Message Percentages" IndependentValueBinding="{Binding Key}"  DependentValueBinding="{Binding Value}" Margin="10,9,10,11" />
                                 </toolkit:Chart.Series>
                             </toolkit:Chart>
                         </TabItem>
@@ -77,7 +62,7 @@
                         VerticalGridLinesBrush="LightGray"
                         BeginningEdit="grid_BeginningEdit"
                         VerticalScrollBarVisibility="Auto"
-                        RowHeight="20"
+                        RowHeight="20" 
                         AutoGenerateColumns="True"/>
             </TabItem>
             <TabItem Header="Channels">

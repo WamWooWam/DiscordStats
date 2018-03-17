@@ -10,12 +10,14 @@ namespace DiscordStats.Data
     public class MemberStats
     {
         private DiscordMember _member;
+        private int _totalMessages;
 
         private MemberStats() { }
 
-        public MemberStats(DiscordMember member)
+        public MemberStats(DiscordMember member, int totalMessages)
         {
             _member = member;
+            _totalMessages = totalMessages;
             Id = member.Id;
         }
 
@@ -25,9 +27,14 @@ namespace DiscordStats.Data
 
         public int SentMessages { get; set; }
 
+        public double PercentageOfMessages => Math.Round(((double)SentMessages / (double)_totalMessages) * 100D, 2);
+
         public int Mentions { get; set; }
 
         public DateTimeOffset LastMessage { get; set; }
+
+        public DateTimeOffset JoinedDiscord => _member.CreationTimestamp;
+        public DateTimeOffset JoinedServer => _member.JoinedAt;
 
         private int DaysSinceJoin => (int)Math.Ceiling((DateTime.Now - _member.JoinedAt.DateTime).TotalDays);
 
