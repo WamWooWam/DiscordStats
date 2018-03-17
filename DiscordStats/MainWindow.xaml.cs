@@ -1,4 +1,5 @@
 ﻿using DiscordStats.Data;
+using DiscordStats.Properties;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.Net.WebSocket;
@@ -33,15 +34,30 @@ namespace DiscordStats
 
         public MainWindow()
         {
+            Loaded += MainWindow_Loaded;
             InitializeComponent();
             _httpClient = new HttpClient();
             DataContext = new StatsConfig();
+        }
+
+        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(Settings.Default.Token))
+            {
+                IsEnabled = false;
+                await LoginAsync(Settings.Default.Token);
+            }
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             IsEnabled = false;
             string password = tokenTextBox.Password.Trim().Trim('"');
+            await LoginAsync(password);
+        }
+
+        private async Task LoginAsync(string password)
+        {
             if (!string.IsNullOrWhiteSpace(password))
             {
                 _client = new DiscordClient(new DiscordConfiguration()
@@ -63,6 +79,9 @@ namespace DiscordStats
                 try
                 {
                     await _client.ConnectAsync();
+
+                    Settings.Default.Token = password;
+                    Settings.Default.Save();
                 }
                 catch
                 {
