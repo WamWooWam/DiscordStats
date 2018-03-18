@@ -175,7 +175,7 @@ namespace DiscordStats
                 await SetStatus("Retrieving members... (This may take a while)");
                 var members = (await conf.Guild.GetAllMembersAsync()).OrderBy(m => m.Username).ToList();
 
-                if (selectAllRoles.IsChecked != false)
+                if (selectAllRoles.IsChecked != true)
                 {
                     members.RemoveAll(m => !m.Roles.Any(r => selectedRoles.SelectedItems.Contains(r)));
                 }
