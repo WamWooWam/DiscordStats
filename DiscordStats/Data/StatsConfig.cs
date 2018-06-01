@@ -35,7 +35,7 @@ namespace DiscordStats
 
         public DiscordChannel InChannel { get; set; }
 
-        public bool CanListBans => Guild?.Channels.First().PermissionsFor(Guild.CurrentMember).HasFlag(Permissions.BanMembers) ?? false;
+        public bool CanListBans => Guild?.IsOwner == true || Guild?.Channels.First().PermissionsFor(Guild.CurrentMember).HasFlag(Permissions.BanMembers) == true;
 
         public bool? UserMessageCounts { get; set; }
         public bool? UserMentionCounts { get; set; }

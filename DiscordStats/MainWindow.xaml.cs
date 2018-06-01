@@ -174,25 +174,29 @@ namespace DiscordStats
             {
                 await SetStatus("Retrieving members... (This may take a while)");
                 var members = (await conf.Guild.GetAllMembersAsync()).OrderBy(m => m.Username).ToList();
-
-                if (conf.IncludeBannedUsers == true)
-                {
-                    var bans = await conf.Guild.GetBansAsync();
-                }
-
+                
                 if (selectAllRoles.IsChecked != true)
                 {
                     members.RemoveAll(m => !m.Roles.Any(r => selectedRoles.SelectedItems.Contains(r)));
                 }
 
+                var users = members.Cast<DiscordUser>().ToList();
+
+                if (conf.IncludeBannedUsers == true)
+                {
+                    await SetStatus("Retrieving bans... (This may take a while)");
+                    var bans = await conf.Guild.GetBansAsync();
+                    users.AddRange(bans.Select(b => b.User));
+                }
+
                 Stopwatch watch = new Stopwatch();
-                TimeSpan timeSpan = default(TimeSpan);
+                TimeSpan timeSpan = default;
 
                 watch.Start();
-                for (int i = 0; i < members.Count; i++)
+                for (int i = 0; i < users.Count; i++)
                 {
-                    var m = members.ElementAt(i);
-                    await SetStatus($"Searching for @{m.Username}#{m.Discriminator}", $"{i + 1}/{members.Count} - {timeSpan:mm\\:ss} remaining", i, members.Count);
+                    var m = users.ElementAt(i);
+                    await SetStatus($"Searching for @{m.Username}#{m.Discriminator}", $"{i + 1}/{users.Count} - {timeSpan:mm\\:ss} remaining", i, users.Count);
 
                     var mstats = new MemberStats(m, stats.TotalMessages);
 
@@ -246,7 +250,7 @@ namespace DiscordStats
                         }
                     }
 
-                    timeSpan = TimeSpan.FromTicks((watch.Elapsed.Ticks / (i + 1)) * (members.Count - i));
+                    timeSpan = TimeSpan.FromTicks((watch.Elapsed.Ticks / (i + 1)) * (users.Count - i));
                     stats.MemberStats.Add(mstats);
                 }
             }

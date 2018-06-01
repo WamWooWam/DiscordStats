@@ -38,7 +38,7 @@ namespace DiscordStats
                     {
                         try
                         {
-                            Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
+                            Application app = new Application();
                             Workbook workbook = app.Workbooks.Add();
                             Worksheet memberSheet = workbook.Sheets.Add();
 

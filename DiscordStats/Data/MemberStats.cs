@@ -9,12 +9,12 @@ namespace DiscordStats.Data
 {
     public class MemberStats
     {
-        private DiscordMember _member;
+        private DiscordUser _member;
         private int _totalMessages;
 
         private MemberStats() { }
 
-        public MemberStats(DiscordMember member, int totalMessages)
+        public MemberStats(DiscordUser member, int totalMessages)
         {
             _member = member;
             _totalMessages = totalMessages;
@@ -34,9 +34,9 @@ namespace DiscordStats.Data
         public DateTimeOffset LastMessage { get; set; }
 
         public DateTimeOffset JoinedDiscord => _member.CreationTimestamp;
-        public DateTimeOffset JoinedServer => _member.JoinedAt;
+        public DateTimeOffset JoinedServer => _member is DiscordMember m ? m.JoinedAt : default;
 
-        private int DaysSinceJoin => (int)Math.Ceiling((DateTime.Now - _member.JoinedAt.DateTime).TotalDays);
+        private int DaysSinceJoin => _member is DiscordMember m ? (int)Math.Ceiling((DateTime.Now - m.JoinedAt.DateTime).TotalDays) : -1;
 
         public int AvgMessagesPerDay => SentMessages != 0 ? (int)(SentMessages / DaysSinceJoin) : 0;
     }
