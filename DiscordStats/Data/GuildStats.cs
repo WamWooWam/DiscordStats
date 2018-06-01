@@ -24,6 +24,8 @@ namespace DiscordStats.Data
 
         public int TotalMessages { get; set; }
 
+        public int MessagesAccountedFor { get; set; }
+
         public int MessagesPerDay => TotalMessages / DaysSinceCreate;
 
         private int DaysSinceCreate => (int)Math.Ceiling((DateTime.Now - _guild.CreationTimestamp.DateTime).TotalDays);

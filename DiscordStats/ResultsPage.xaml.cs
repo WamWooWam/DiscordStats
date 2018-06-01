@@ -39,8 +39,9 @@ namespace DiscordStats
                 {
                     dictionary.Add(item.Username, item.SentMessages);
                 }
-                
+
                 ((PieSeries)leaderboardsPie.Series[0]).ItemsSource = dictionary.OrderByDescending(t => t.Value);
+                ((PieSeries)accountedForPie.Series[0]).ItemsSource = new Dictionary<string, int>() { ["Accounted"] = stats.MessagesAccountedFor, ["Unaccounted"] = stats.TotalMessages - stats.MessagesAccountedFor };
             }
         }
 

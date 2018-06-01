@@ -39,6 +39,7 @@
                             <StackPanel VerticalAlignment="Center">
                                 <TextBlock Text="{Binding Guild.Name}" FontSize="36"/>
                                 <TextBlock>Created: <Run Text="{Binding Guild.CreationTimestamp, Mode=OneWay}"/></TextBlock>
+                                <TextBlock>Total Members: <Run Text="{Binding Guild.TotalMembers}"/></TextBlock>
                             </StackPanel>
                         </StackPanel>
                     </Grid>
@@ -47,6 +48,13 @@
                             <toolkit:Chart x:Name="leaderboardsPie" Title="Message Leaderboards">
                                 <toolkit:Chart.Series>
                                     <toolkit:PieSeries Title="User Message Percentages" IndependentValueBinding="{Binding Key}"  DependentValueBinding="{Binding Value}" Margin="10,9,10,11" />
+                                </toolkit:Chart.Series>
+                            </toolkit:Chart>
+                        </TabItem>
+                        <TabItem Header="Messages Accounted For">
+                            <toolkit:Chart x:Name="accountedForPie" Title="Messages Accounted For">
+                                <toolkit:Chart.Series>
+                                    <toolkit:PieSeries Title="Accounted For" IndependentValueBinding="{Binding Key}"  DependentValueBinding="{Binding Value}" Margin="10,9,10,11" />
                                 </toolkit:Chart.Series>
                             </toolkit:Chart>
                         </TabItem>
@@ -63,7 +71,8 @@
                         BeginningEdit="grid_BeginningEdit"
                         VerticalScrollBarVisibility="Auto"
                         RowHeight="20" 
-                        AutoGenerateColumns="True"/>
+                        AutoGenerateColumns="True"
+                        VirtualizingPanel.ScrollUnit="Pixel"/>
             </TabItem>
             <TabItem Header="Channels">
                 <DataGrid 

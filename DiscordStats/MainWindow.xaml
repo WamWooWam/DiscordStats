@@ -53,6 +53,7 @@
                     <CheckBox Content="User Mention Counts" Margin="5,1.5" IsChecked="{Binding UserMentionCounts}"/>
                     <CheckBox Content="Channel Message Counts" Margin="5,1.5" IsChecked="{Binding ChannelMessageCounts}" />
                     <CheckBox Content="Message Content Stats" Margin="5,1.5" IsChecked="{Binding MessageContentStats}"/>
+                    <CheckBox Content="Include Banned Users" Margin="5,1.5" IsEnabled="{Binding CanListBans}" IsChecked="{Binding IncludeBannedUsers}"/>
                     <CheckBox Content="Ban Me Daddy" ToolTip="Disables any and all rate limits added to stop you getting banned by Discord." Margin="5,1.5" IsChecked="{Binding BanMeDaddy}" Checked="CheckBox_Checked"/>
                 </WrapPanel>
                 <Grid>

@@ -175,6 +175,11 @@ namespace DiscordStats
                 await SetStatus("Retrieving members... (This may take a while)");
                 var members = (await conf.Guild.GetAllMembersAsync()).OrderBy(m => m.Username).ToList();
 
+                if (conf.IncludeBannedUsers == true)
+                {
+                    var bans = await conf.Guild.GetBansAsync();
+                }
+
                 if (selectAllRoles.IsChecked != true)
                 {
                     members.RemoveAll(m => !m.Roles.Any(r => selectedRoles.SelectedItems.Contains(r)));
@@ -197,6 +202,8 @@ namespace DiscordStats
                         {
                             string sentResult = await _httpClient.GetStringAsync($"https://discordapp.com/api/v7/guilds/{conf.Guild.Id}/messages/search?author_id={m.Id}&include_nsfw=true" + append);
                             mstats.SentMessages = GetCount(sentResult);
+                            stats.MessagesAccountedFor += mstats.SentMessages;
+
                             var array = JObject.Parse(sentResult)["messages"].FirstOrDefault();
 
                             if (array != null)
