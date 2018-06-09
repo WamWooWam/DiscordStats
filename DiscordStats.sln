@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordStats", "DiscordStats\DiscordStats.csproj", "{2DDE831E-8B0E-42C7-BE18-08D43B05847E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WamWooWam.Wpf", "WamWooWam.Wpf\WamWooWam.Wpf\WamWooWam.Wpf.csproj", "{1E367189-ADD4-4299-9A2D-08CC4DCAA039}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{2DDE831E-8B0E-42C7-BE18-08D43B05847E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DDE831E-8B0E-42C7-BE18-08D43B05847E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DDE831E-8B0E-42C7-BE18-08D43B05847E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E367189-ADD4-4299-9A2D-08CC4DCAA039}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E367189-ADD4-4299-9A2D-08CC4DCAA039}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E367189-ADD4-4299-9A2D-08CC4DCAA039}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E367189-ADD4-4299-9A2D-08CC4DCAA039}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

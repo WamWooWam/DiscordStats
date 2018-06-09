@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
+using WamWooWam.Wpf;
 
 namespace DiscordStats
 {
@@ -17,6 +18,7 @@ namespace DiscordStats
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            Themes.SetTheme();
             FrameworkElement.LanguageProperty.OverrideMetadata(
                 typeof(FrameworkElement),
                 new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));

@@ -1,0 +1,3 @@
+[submodule "WamWooWam.Wpf"]
+	path = WamWooWam.Wpf
+	url = https://github.com/WamWooWam/WamWooWam.Wpf.git

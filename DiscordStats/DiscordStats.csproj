@@ -212,5 +212,11 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WamWooWam.Wpf\WamWooWam.Wpf\WamWooWam.Wpf.csproj">
+      <Project>{1e367189-add4-4299-9a2d-08cc4dcaa039}</Project>
+      <Name>WamWooWam.Wpf</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

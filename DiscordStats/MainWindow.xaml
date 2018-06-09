@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiscordStats"
-        mc:Ignorable="d"
+        mc:Ignorable="d" Foreground="{DynamicResource SystemBaseHighColor}" Background="{DynamicResource SystemAltHighColor}"
         Title="Discord Statistics" Height="480" Width="640">
     <Grid Margin="10">
         <StackPanel x:Name="runContent" Visibility="Collapsed" VerticalAlignment="Center">

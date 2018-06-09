@@ -15,7 +15,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Margin="0,0,0,10" FontSize="24" Text="Results"/>
+        <TextBlock Margin="0,0,0,10" FontSize="24" Text="Results" Foreground="{DynamicResource SystemBaseHighColor}"/>
         <TabControl Grid.Row="1">
             <TabItem Header="Guild">
                 <Grid>
@@ -29,7 +29,7 @@
                                 <BlurEffect Radius="40"/>
                             </Image.Effect>
                         </Image>
-                        <Grid Background="#80FFFFFF"/>
+                        <Grid Background="{DynamicResource SystemBaseMediumLowColor}"/>
                         <StackPanel Orientation="Horizontal">
                             <Ellipse Width="128" Height="128" Margin="20">
                                 <Ellipse.Fill>
@@ -43,16 +43,16 @@
                             </StackPanel>
                         </StackPanel>
                     </Grid>
-                    <TabControl Grid.Row="1" TabStripPlacement="Bottom">
+                    <TabControl Grid.Row="1" TabStripPlacement="Top">
                         <TabItem Header="Message Percentages">
-                            <toolkit:Chart x:Name="leaderboardsPie" Title="Message Leaderboards">
+                            <toolkit:Chart x:Name="leaderboardsPie" Title="Message Leaderboards" Foreground="Black" Background="White">
                                 <toolkit:Chart.Series>
-                                    <toolkit:PieSeries Title="User Message Percentages" IndependentValueBinding="{Binding Key}"  DependentValueBinding="{Binding Value}" Margin="10,9,10,11" />
+                                    <toolkit:PieSeries Title="User Message Percentages" IndependentValueBinding="{Binding Key}" DependentValueBinding="{Binding Value}" Margin="10,9,10,11" />
                                 </toolkit:Chart.Series>
                             </toolkit:Chart>
                         </TabItem>
                         <TabItem Header="Messages Accounted For">
-                            <toolkit:Chart x:Name="accountedForPie" Title="Messages Accounted For">
+                            <toolkit:Chart x:Name="accountedForPie" Title="Messages Accounted For" Foreground="Black" Background="White">
                                 <toolkit:Chart.Series>
                                     <toolkit:PieSeries Title="Accounted For" IndependentValueBinding="{Binding Key}"  DependentValueBinding="{Binding Value}" Margin="10,9,10,11" />
                                 </toolkit:Chart.Series>
@@ -72,7 +72,9 @@
                         VerticalScrollBarVisibility="Auto"
                         RowHeight="20" 
                         AutoGenerateColumns="True"
-                        VirtualizingPanel.ScrollUnit="Pixel"/>
+                        VirtualizingPanel.ScrollUnit="Pixel">
+
+                </DataGrid>
             </TabItem>
             <TabItem Header="Channels">
                 <DataGrid 
