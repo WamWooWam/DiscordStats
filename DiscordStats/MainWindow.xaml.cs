@@ -44,8 +44,15 @@ namespace DiscordStats
         {
             if (!string.IsNullOrWhiteSpace(Settings.Default.Token))
             {
-                IsEnabled = false;
-                await LoginAsync(Settings.Default.Token);
+                try
+                {
+                    IsEnabled = false;
+                    await LoginAsync(Settings.Default.Token);
+                }
+                catch
+                {
+                    IsEnabled = true;
+                }
             }
         }
 
