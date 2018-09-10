@@ -19,6 +19,7 @@ namespace DiscordStats
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             Themes.SetTheme();
+
             FrameworkElement.LanguageProperty.OverrideMetadata(
                 typeof(FrameworkElement),
                 new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));

@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiscordStats"
-        mc:Ignorable="d" Foreground="{DynamicResource SystemBaseHighColor}" Background="{DynamicResource SystemAltHighColor}"
-        Title="Discord Statistics" Height="480" Width="640">
+        mc:Ignorable="d" Style="{DynamicResource WindowStyle}"
+        Title="Discord Statistics" Height="500" Width="640">
     <Grid Margin="10">
         <StackPanel x:Name="runContent" Visibility="Collapsed" VerticalAlignment="Center">
             <TextBlock FontSize="24" HorizontalAlignment="Center">
@@ -31,7 +31,7 @@
             </StackPanel>
             <StackPanel Name="mainGrid" Visibility="Collapsed">
                 <Label Content="Choose a guild" />
-                <ComboBox Name="guildsComboBox" Margin="5,0" SelectionChanged="guildsComboBox_SelectionChanged" SelectedItem="{Binding Guild}">
+                <ComboBox Name="guildsComboBox" Margin="5,0" Padding="5" SelectionChanged="guildsComboBox_SelectionChanged" SelectedItem="{Binding Guild}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -68,7 +68,7 @@
                         <ListView x:Name="selectedChannels" SelectionChanged="selectedChannels_SelectionChanged" SelectionMode="Multiple" MaxHeight="125">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock>#<Run Text="{Binding Name, Mode=OneWay}"/></TextBlock>
+                                    <TextBlock ToolTip="{Binding Topic}">#<Run Text="{Binding Name, Mode=OneWay}"/></TextBlock>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
@@ -88,7 +88,7 @@
                         <CheckBox Margin="0,5" x:Name="selectAllRoles" Checked="selectAllRoles_Checked" Unchecked="selectAllRoles_Unchecked" Content="Select All"/>
                     </StackPanel>
                 </Grid>
-                <Button Click="run_Click" Name="run" Content="Run" Margin="0,10" Padding="17.5, 1.5"/>
+                <Button Click="run_Click" Name="run" Content="Run" Margin="0,10" />
             </StackPanel>
         </StackPanel>
     </Grid>
