@@ -44,6 +44,16 @@ namespace DiscordStats
         {
             if (!string.IsNullOrWhiteSpace(Settings.Default.Token))
             {
+                TaskDialog dialog = new TaskDialog()
+                {
+                    MainInstruction = "Go away",
+                    Content = "This tool is a bad idea. It violates ToS, and is likely to get your Discord account banned.\r\nDon't use it. K?",
+                    MainIcon = TaskDialogIcon.Warning,
+                    WindowTitle = "Discord Statistics"
+                };
+                dialog.Buttons.Add(new TaskDialogButton(ButtonType.Ok));
+                dialog.ShowDialog();
+                
                 try
                 {
                     IsEnabled = false;
