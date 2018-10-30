@@ -20,9 +20,9 @@
             </ControlTemplate>
 
             <Style TargetType="{x:Type DatePicker}">
-                <Setter Property="Foreground" Value="{DynamicResource SystemBaseHighColor}"/>
-                <Setter Property="Background" Value="{DynamicResource SystemChromeMediumLowColor}"/>
-                <Setter Property="BorderBrush" Value="{DynamicResource SystemBaseLowColor}"/>
+                <Setter Property="Foreground" Value="{DynamicResource SystemBaseHighBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource SystemChromeMediumLowBrush}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource SystemBaseLowBrush}"/>
                 <Setter Property="BorderThickness" Value="2"/>
                 <Setter Property="IsTodayHighlighted" Value="True"/>
                 <Setter Property="SelectedDateFormat" Value="Short"/>
@@ -52,8 +52,8 @@
                 </Setter>
             </Style>
             <Style TargetType="{x:Type DatePickerTextBox}">
-                <Setter Property="Foreground" Value="{DynamicResource SystemBaseHighColor}"/>
-                <Setter Property="Background" Value="{DynamicResource SystemChromeMediumLowColor}"/>
+                <Setter Property="Foreground" Value="{DynamicResource SystemBaseHighBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource SystemChromeMediumLowBrush}"/>
                 <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
                 <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
                 <Setter Property="Template">

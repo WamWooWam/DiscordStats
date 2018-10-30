@@ -91,6 +91,7 @@ namespace DiscordStats
 
                 _client.DebugLogger.LogMessageReceived += (s, ev) => Debug.WriteLine(ev);
 
+                _httpClient.DefaultRequestHeaders.Clear();
                 _httpClient.DefaultRequestHeaders.Add("authorization", password);
                 _client.Ready += _client_Ready;
                 try

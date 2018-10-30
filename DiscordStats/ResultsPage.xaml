@@ -15,7 +15,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Margin="0,0,0,10" FontSize="24" Text="Results" Foreground="{DynamicResource SystemBaseHighColor}"/>
+        <TextBlock Margin="0,0,0,10" FontSize="24" Text="Results" Foreground="{DynamicResource SystemBaseHighBrush}"/>
         <TabControl Grid.Row="1">
             <TabItem Header="Guild">
                 <Grid>
@@ -29,7 +29,7 @@
                                 <BlurEffect Radius="40"/>
                             </Image.Effect>
                         </Image>
-                        <Grid Background="{DynamicResource SystemBaseMediumLowColor}"/>
+                        <Grid Background="{DynamicResource SystemChromeLowBrush}"/>
                         <StackPanel Orientation="Horizontal">
                             <Ellipse Width="128" Height="128" Margin="20">
                                 <Ellipse.Fill>
